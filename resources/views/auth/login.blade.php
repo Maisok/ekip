@@ -7,7 +7,7 @@
     
     @vite('resources/css/app.css')
 </head>
-<body class="bg-cover bg-center">
+<body class="bg-cover bg-center">1
     <x-header/>
     <div class="flex items-center justify-center min-h-screen bg-black bg-opacity-50" style="background-image: url('{{asset('img/special-off3 1.png')}}">
         <div class="w-full max-w-md px-8 py-10 bg-gray-800 bg-opacity-90 rounded-xl text-white">
