@@ -1,0 +1,7 @@
+composer install
+npm install -D tailwindcss postcss autoprefixer
+npx tailwindcss init -p
+php artisan key:generate
+php artisan migarte
+php artisan serve   
+npm run dev
