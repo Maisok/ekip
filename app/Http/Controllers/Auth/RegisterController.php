@@ -3,7 +3,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
-
+use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
@@ -19,31 +19,34 @@ class RegisterController extends Controller
 
     public function register(Request $request)
     {
+        \Log::info('Register request received', $request->all());
+    
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
             'phone_number' => 'required|string|unique:users',
-            'g-recaptcha-response' => 'required',
+            // 'g-recaptcha-response' => 'required',
         ]);
     
         // Проверка reCAPTCHA
-        $client = new Client([
-            'verify' => false, // Disable SSL verification
-        ]);
-        $response = $client->post('https://www.google.com/recaptcha/api/siteverify', [
-            'form_params' => [
-                'secret' => '6Lc9BYEqAAAAAHy807C2BpwH7O-nqlIEEnDOyx0I',
-                'response' => $request->input('g-recaptcha-response'),
-                'remoteip' => $request->ip(),
-            ],
-        ]);
+        // $client = new Client([
+        //     'verify' => false, // Disable SSL verification
+        // ]);
+        // $response = $client->post('https://www.google.com/recaptcha/api/siteverify', [
+        //     'form_params' => [
+        //         'secret' => '6Lc9BYEqAAAAAHy807C2BpwH7O-nqlIEEnDOyx0I',
+        //         'response' => $request->input('g-recaptcha-response'),
+        //         'remoteip' => $request->ip(),
+        //     ],
+        // ]);
     
-        $body = json_decode((string) $response->getBody());
+        // $body = json_decode((string) $response->getBody());
     
-        if (!$body->success) {
-            return redirect()->back()->withErrors(['g-recaptcha-response' => 'reCAPTCHA verification failed.']);
-        }
+        // if (!$body->success) {
+        //     \Log::error('reCAPTCHA verification failed', ['response' => $body]);
+        //     return redirect()->back()->withErrors(['g-recaptcha-response' => 'reCAPTCHA verification failed.']);
+        // }
     
         try {
             $user = User::create([
@@ -54,10 +57,14 @@ class RegisterController extends Controller
                 'role' => 'user',
             ]);
     
+            // Аутентификация пользователя
             Auth::login($user);
+    
+            \Log::info('User registered and authenticated', ['user' => $user->toArray()]);
     
             return redirect('/');
         } catch (QueryException $e) {
+            \Log::error('Database error during registration', ['error' => $e->getMessage()]);
             if ($e->errorInfo[1] == 1062) { // Код ошибки для дубликата записи
                 return redirect()->back()->withErrors(['phone_number' => 'Номер телефона уже занят.']);
             }

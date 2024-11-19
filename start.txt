@@ -1,5 +1,6 @@
 composer install
 composer install --ignore-platform-reqs
+
 npm install -D tailwindcss postcss autoprefixer
 php artisan storage:link
 npx tailwindcss init -p
@@ -7,3 +8,10 @@ php artisan key:generate
 php artisan migarte
 php artisan serve   
 npm run dev
+
+
+
+
+
+composer require --dev phpunit/phpunit --ignore-platform-reqs
+composer require --dev orchestra/testbench --ignore-platform-reqs
