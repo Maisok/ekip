@@ -30,23 +30,23 @@ class RegisterController extends Controller
         ]);
     
         // Проверка reCAPTCHA
-        // $client = new Client([
-        //     'verify' => false, // Disable SSL verification
-        // ]);
-        // $response = $client->post('https://www.google.com/recaptcha/api/siteverify', [
-        //     'form_params' => [
-        //         'secret' => '6Lc9BYEqAAAAAHy807C2BpwH7O-nqlIEEnDOyx0I',
-        //         'response' => $request->input('g-recaptcha-response'),
-        //         'remoteip' => $request->ip(),
-        //     ],
-        // ]);
+        $client = new Client([
+            'verify' => false, // Disable SSL verification
+        ]);
+        $response = $client->post('https://www.google.com/recaptcha/api/siteverify', [
+            'form_params' => [
+                'secret' => '6Lc9BYEqAAAAAHy807C2BpwH7O-nqlIEEnDOyx0I',
+                'response' => $request->input('g-recaptcha-response'),
+                'remoteip' => $request->ip(),
+            ],
+        ]);
     
-        // $body = json_decode((string) $response->getBody());
+        $body = json_decode((string) $response->getBody());
     
-        // if (!$body->success) {
-        //     \Log::error('reCAPTCHA verification failed', ['response' => $body]);
-        //     return redirect()->back()->withErrors(['g-recaptcha-response' => 'reCAPTCHA verification failed.']);
-        // }
+        if (!$body->success) {
+            \Log::error('reCAPTCHA verification failed', ['response' => $body]);
+            return redirect()->back()->withErrors(['g-recaptcha-response' => 'reCAPTCHA verification failed.']);
+        }
     
         try {
             $user = User::create([
