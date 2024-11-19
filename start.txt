@@ -1,5 +1,7 @@
 composer install
+composer install --ignore-platform-reqs
 npm install -D tailwindcss postcss autoprefixer
+php artisan storage:link
 npx tailwindcss init -p
 php artisan key:generate
 php artisan migarte

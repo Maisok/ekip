@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wild Side Корзина</title>
+    <link rel="shortcut icon" href="{{asset('img/logo.png')}}" type="image/x-icon">
     @vite('resources/css/app.css')
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <style>
