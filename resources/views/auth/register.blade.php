@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <title>Wild Side Регистрация</title>
     <style>
         body, html {
@@ -43,13 +44,35 @@
             <form action="{{ route('register') }}" method="POST" class="space-y-4">
                 @csrf
                 <input type="text" name="name" placeholder="Имя" class="w-full px-4 py-2 bg-gray-700 rounded-md text-gray-200 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500">
+                @error('name')
+                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                @enderror
+
                 <input type="text" maxlength="16" id="phone_number" name="phone_number" placeholder="Номер телефона" class="w-full px-4 py-2 bg-gray-700 rounded-md text-gray-200 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500">
                 @error('phone_number')
                     <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                 @enderror
+
                 <input type="password" name="password" placeholder="Пароль" class="w-full px-4 py-2 bg-gray-700 rounded-md text-gray-200 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500">
+                @error('password')
+                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                @enderror
+
                 <input type="password" name="password_confirmation" placeholder="Подтверждение пароля" class="w-full px-4 py-2 bg-gray-700 rounded-md text-gray-200 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500">
+                @error('password_confirmation')
+                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                @enderror
+
                 <input type="email" name="email" placeholder="Электронный адрес" class="w-full px-4 py-2 bg-gray-700 rounded-md text-gray-200 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500">
+                @error('email')
+                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                @enderror
+
+                <div class="g-recaptcha" data-sitekey="6Lc9BYEqAAAAAIeUpt8pHeRh9FoKB9t5DLmsMxdu"></div>
+                @error('g-recaptcha-response')
+                    <p class="text-red-500 text-xs mt-1">Пожалуйста, подтвердите, что вы не робот.</p>
+                @enderror
+
                 <p class="text-center text-gray-400 text-sm mt-4">
                     <a href="{{ route('login') }}" class="hover:text-orange-500">Войти в существующий аккаунт</a>
                 </p>
@@ -85,6 +108,6 @@
                 e.target.value = phoneNumber;
             });
         });
-      </script>
+    </script>
 </body>
 </html>
